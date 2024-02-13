@@ -16,3 +16,14 @@ const slides = [
 		"tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
 	}
 ]
+// ETAPE 1: Récuperer les éléments html, ajouter un addEventListener avec un consol.log
+
+let arrow_left = document.querySelector(".arrow_left");
+arrow_left.addEventListener("click", function () {
+	console.log("Clique sur la flèche gauche")
+});
+
+let arrow_right = document.querySelector(".arrow_right");
+arrow_right.addEventListener("click", function () {
+	console.log("Clique sur la flèche droite")
+});
