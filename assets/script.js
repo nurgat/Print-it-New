@@ -17,73 +17,93 @@ const slides = [
     }
 ];
 
-let diapoEnCours = 0
+let diapoCourante = 0
 	
 // ETAPE 2: Récuperer les éléments html, ajouter un addEventListener avec un consol.log
 
-const arrow_left = document.querySelector(".arrow_left");
-arrow_left.addEventListener("click", function () {
-	console.log("Clique sur la flèche gauche")
+const fleche_gauche = document.querySelector(".arrow_left");
+fleche_gauche.addEventListener('click', () => {
+	changerDiapo (-1) // Fonction défini a la derniere etape
+    console.log("Clic sur la flèche gauche");
 });
-
-const arrow_right = document.querySelector(".arrow_right");
-arrow_right.addEventListener("click", function () {
-	console.log("Clique sur la flèche droite")
+	
+const fleche_droite = document.querySelector(".arrow_right");
+fleche_droite.addEventListener('click', () => {
+	changerDiapo (1) // // Fonction défini a la derniere etape
+    console.log("Clic sur la flèche droite");
 });
+	
 
 // ETAPE 3: Ajouter les bullets-points au slider
 
-function ajouterBulletsPoints() {
-    const dotsContainer = document.querySelector('.dots');
+function ajouterPointsNavigation() {
+    const containeurPoints = document.querySelector('.dots');
     for (let index = 0; index < slides.length; index++) {
-        const dot = document.createElement('span');
-        dot.classList.add('dot');
+        const point = document.createElement('span');
+        point.classList.add('dot');
         
-        dot.addEventListener('click', () => {
+        point.addEventListener('click', () => {
 			console.log("J'ai cliqué sur un point");
-            diapoEnCours = index;
-            changeSlideTo(diapoEnCours); // Appel de la Fonction qui sera définie juste en dessous
+            diapoCourante = index;
+            changerDiapoVers(diapoCourante); // Appel de la Fonction qui sera définie juste en dessous
         });
-        dotsContainer.appendChild(dot);
+        containeurPoints.appendChild(point);
     }
-	// S'assure que dès que les points sont créés et ajoutés au DOM, leur état visuel est mis à jour pour refléter la diapositive actuellement affichée. Cela garantit que le premier point est correctement mis en évidence dès le chargement initial de la page.
-	updateDots(diapoEnCours); 
+	// Cela garantit que le premier point est correctement mis en évidence dès le chargement initial de la page.
+	mettreAjourPoints(diapoCourante); 
 }
 // Cet APPEL dit au JavaScript : "Maintenant, exécute le code que j'ai défini dans ajouterBulletsPoints."
-ajouterBulletsPoints();
+ajouterPointsNavigation();
 
 // Fonction mettant à jour l'image et le texte de la slide actuelle, ainsi que l'état des bullet points
-function changeSlideTo(diapoEnCours) {
+function changerDiapoVers(diapoCourante) {
 	// Met à jour l'attribut 'src' de l'image pour afficher la nouvelle slide.
-		document.querySelector('.banner-img').src = `./assets/images/slideshow/${slides[diapoEnCours].image}`;
+		document.querySelector('.banner-img').src = `./assets/images/slideshow/${slides[diapoCourante].image}`;
 	// Met à jour le contenu HTML du paragraphe pour afficher le texte de la nouvelle slide.
-		document.querySelector('#banner p').innerHTML = slides[diapoEnCours].tagLine;
+		document.querySelector('#banner p').innerHTML = slides[diapoCourante].tagLine;
 	// Appelle la fonction pour mettre à jour les bullet points qui sera défini juste au dessous
-	updateDots(diapoEnCours);
+	mettreAjourPoints(diapoCourante);
 	}
 
 	// Fonction pour mettre à jour l'état visuel des bullet points pour refléter la slide actuelle
-	function updateDots(diapoEnCours) {
-		const dots = document.querySelectorAll('.dot');
+	function mettreAjourPoints(diapoCourante) {
+		const lesPoints = document.querySelectorAll('.dot');
 		// Utilisation d'une boucle for pour parcourir tous les dots
-		for (let index = 0; index < dots.length; index++) {
+		for (let index = 0; index < lesPoints.length; index++) {
 			// Accès à chaque dot par son index
-			const dot = dots[index];
+			const point = lesPoints[index];
 			// Supprime la classe 'dot_selected' pour tous les dots
-			dot.classList.remove('dot_selected');
+			point.classList.remove('dot_selected');
 			// Ajoute la classe 'dot_selected' uniquement au dot correspondant à diapoEnCours
-			if (index === diapoEnCours) {
-				dot.classList.add('dot_selected');
-			}
+			if ( index === diapoCourante) {
+				point.classList.add('dot_selected');
+			}			
 		}
 	}
-	
 
-	// Étape 4 : Modifiez le slide au clic sur le bouton
+	// Étape 4 : Modifiez le slide au click sur le bouton
 
+		// - Concernant les fleches : voir étape 2
+		// - Concernaznt les points de navigation : voir étape 3
 
+	// Étape 5 : Mettre en place le défilement infini
 
+	function changerDiapo(direction) {
+    // Calculer le nouvel index sans utiliser l'opérateur modulo
+    diapoCourante += direction;
 
+    // Si l'index dépasse la dernière diapositive, revenir à la première
+    if (diapoCourante >= slides.length) {
+        diapoCourante = 0;
+    }
+    // Si l'index est inférieur à la première diapositive, aller à la dernière
+    else if (diapoCourante < 0) {
+        diapoCourante = slide.length - 1;
+    }
+
+    // Appeler changerDiapoVers avec le nouvel index
+    changerDiapoVers(diapoCourante);
+}
 
 
 
